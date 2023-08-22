@@ -1,6 +1,9 @@
-import React, { Fragment, useEffect, useRef } from 'react';
-import { Image, Transformer } from 'react-konva';
-import useImage from './useImage';
+import React, { Fragment, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+const { Image, Transformer } = dynamic(() => import("react-konva"), {
+  ssr: false,
+});
+import useImage from "./useImage";
 
 const AdImage = ({
   image,
@@ -12,7 +15,7 @@ const AdImage = ({
   setSelectedId,
   layerRef,
 }) => {
-  const [img] = useImage(image.src, 'anonymous');
+  const [img] = useImage(image.src, "anonymous");
   const imageRef = useRef();
   const trRef = useRef();
 
@@ -34,15 +37,15 @@ const AdImage = ({
   }, []);
 
   const clearFocus = (shape) => {
-    shape.setStroke('transparent');
+    shape.setStroke("transparent");
     layerRef.current.draw();
   };
 
   const setFocus = (shape) => {
-    shape.setStroke('#2dacf5');
+    shape.setStroke("#2dacf5");
     layerRef.current.draw();
   };
-  console.log('image', image);
+  console.log("image", image);
 
   return (
     <Fragment>
@@ -52,7 +55,7 @@ const AdImage = ({
         onMouseEnter={(event) => {
           const shape = event.target;
 
-          stageRef.current.container().style.cursor = 'move';
+          stageRef.current.container().style.cursor = "move";
 
           if (!isSelected) {
             setFocus(shape);
@@ -60,7 +63,7 @@ const AdImage = ({
         }}
         onMouseLeave={(event) => {
           const shape = event.target;
-          stageRef.current.container().style.cursor = 'default';
+          stageRef.current.container().style.cursor = "default";
           if (!isSelected) {
             clearFocus(shape);
           }

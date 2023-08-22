@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Stage, Layer } from 'react-konva';
-import html2canvas from 'html2canvas';
-import AdImage from './Image';
-import Footer from '../Footer';
-import Header from '../Header';
-import { FaTimes, FaImages } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import dynamic from "next/dynamic";
+const { Stage, Layer } = dynamic(() => import("react-konva"), {
+  ssr: false,
+});
+import html2canvas from "html2canvas";
+import AdImage from "./Image";
+import Footer from "../Footer";
+import Header from "../Header";
+import { FaTimes, FaImages } from "react-icons/fa";
 import {
   MdUpload,
   MdOutlineUpload,
@@ -15,20 +18,20 @@ import {
   MdOutlineImage,
   MdPalette,
   MdSave,
-} from 'react-icons/md';
-import { TbCirclePlus } from 'react-icons/tb';
+} from "react-icons/md";
+import { TbCirclePlus } from "react-icons/tb";
 
 import {
   RiBringForward,
   RiSendBackward,
   RiShoppingCartLine,
-} from 'react-icons/ri';
-import { BsImageFill } from 'react-icons/bs';
-import { useCart } from '../../context/cartContext/CartProvider';
-import { addItem } from '../../context/cartContext/cartActions';
-import { useProduct } from '../../context/productContext/ProductProvider';
-import Loader from '../Loader';
-import { getProduct } from '../../context/productContext/productActions';
+} from "react-icons/ri";
+import { BsImageFill } from "react-icons/bs";
+import { useCart } from "../../context/cartContext/CartProvider";
+import { addItem } from "../../context/cartContext/cartActions";
+import { useProduct } from "../../context/productContext/ProductProvider";
+import Loader from "../Loader";
+import { getProduct } from "../../context/productContext/productActions";
 import {
   Box,
   Flex,
@@ -37,19 +40,18 @@ import {
   NumberInputStepper,
   NumberDecrementStepper,
   NumberIncrementStepper,
-} from '@chakra-ui/react';
-import TextDisplay from './Text';
-import useWindowDimensions from '../../custom-hooks/useWindowDimensions';
-import { CompactPicker } from 'react-color';
+} from "@chakra-ui/react";
+import TextDisplay from "./Text";
+import useWindowDimensions from "../../custom-hooks/useWindowDimensions";
+import { CompactPicker } from "react-color";
 
-import customCircleWhite from '../../images/custom_product/bfkyxdvhgixrfdutyn16.png';
-import customCircleBlack from '../../images/custom_product/ek8qv00pirnismhmqtvq.jpeg';
+import customCircleWhite from "../../images/custom_product/bfkyxdvhgixrfdutyn16.png";
+import customCircleBlack from "../../images/custom_product/ek8qv00pirnismhmqtvq.jpeg";
 const App = () => {
   const params = useParams();
 
   const [{ items }, cardDispatch] = useCart();
-  const [{ products, loading, error }, productDispatch] =
-    useProduct();
+  const [{ products, loading, error }, productDispatch] = useProduct();
 
   const founItem = products.filter((item) => item._id === params.id);
   const product = founItem[0];
@@ -65,8 +67,8 @@ const App = () => {
 
   const [font, setFont] = React.useState({
     size: 32,
-    family: 'Arial',
-    color: '#000',
+    family: "Arial",
+    color: "#000",
   });
   const activeRef = React.useRef();
   const backgroundRef = React.useRef();
@@ -78,20 +80,20 @@ const App = () => {
     }
   };
 
-  const [color, setColor] = React.useState('#000');
+  const [color, setColor] = React.useState("#000");
 
   const [showImage, setShowImage] = useState(false);
   const [showText, setShowText] = useState(false);
   const [initState, setInitState] = useState(true);
   const [showPVariation, setShowPVariation] = useState(false);
   const [showSavedDesign, setShowSavedDesign] = useState(false);
-  const [circleColor, setCircleColor] = useState('#efeef0');
-  const [activeBox, setActiveBox] = useState('white');
+  const [circleColor, setCircleColor] = useState("#efeef0");
+  const [activeBox, setActiveBox] = useState("white");
   const [savedImg, setsavedImg] = useState([]);
   const { width } = useWindowDimensions();
 
   useEffect(() => {
-    window.addEventListener('keydown', function (e) {
+    window.addEventListener("keydown", function (e) {
       if (e.keyCode === 46 && activeRef.current && layerRef.current) {
         setSelectedId(null);
         activeRef.current.destroy();
@@ -101,7 +103,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const json = localStorage.getItem('saveDesignCircle');
+    const json = localStorage.getItem("saveDesignCircle");
     if (json) {
       const state = JSON.parse(json);
       const imgArr = state.imgArr;
@@ -110,7 +112,7 @@ const App = () => {
   }, []);
 
   const downloadURI = (uri, name) => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.download = name;
     link.href = uri;
     document.body.appendChild(link);
@@ -137,13 +139,13 @@ const App = () => {
       if (activeRef.current.attrs.text) {
         activeRef.current.attrs.fill = color;
       } else {
-        activeRef.current.attrs.fill = 'transparent';
+        activeRef.current.attrs.fill = "transparent";
       }
       activeRef.current.attrs.fontSize = size;
       activeRef.current.attrs.fontFamily = family;
       activeRef.current.attrs.color = color;
       // activeRef.current.attrs.fill = "#463d70";
-      activeRef.current.attrs.borderRadius = '50%';
+      activeRef.current.attrs.borderRadius = "50%";
     }
   }, [font]);
 
@@ -157,13 +159,13 @@ const App = () => {
       img.src = img_url;
       img.onload = function () {
         const item = {
-          type: 'image',
+          type: "image",
           src: img_url,
           id: hash,
           hash: hash,
           x: 130.91964783726962,
           y: 130.98084650809713,
-          imageId: '21-logo',
+          imageId: "21-logo",
           draggable: true,
           strokeWidth: 1,
           offsetX: this.width / 4,
@@ -177,10 +179,7 @@ const App = () => {
     }
   };
   const handleImage = (e) => {
-    setFile((file) => [
-      ...file,
-      URL.createObjectURL(e.target.files[0]),
-    ]);
+    setFile((file) => [...file, URL.createObjectURL(e.target.files[0])]);
 
     const hash = btoa(Math.random()).substr(10, 5);
 
@@ -189,13 +188,13 @@ const App = () => {
     img.src = url;
     img.onload = function () {
       const item = {
-        type: 'image',
+        type: "image",
         src: URL.createObjectURL(e.target.files[0]),
         id: hash,
         hash: hash,
         x: 130.91964783726962,
         y: 130.98084650809713,
-        imageId: '21-logo',
+        imageId: "21-logo",
         draggable: true,
         strokeWidth: 1,
         offsetX: this.width / 4,
@@ -209,10 +208,7 @@ const App = () => {
   };
 
   const removeImg = (index) => {
-    setFile([
-      ...file.slice(0, index),
-      ...file.slice(index + 1, file.length),
-    ]);
+    setFile([...file.slice(0, index), ...file.slice(index + 1, file.length)]);
     setImages([
       ...images.slice(0, index),
       ...images.slice(index + 1, images.length),
@@ -220,15 +216,12 @@ const App = () => {
   };
 
   const customAddToCart = async () => {
-    const element = document.getElementById('container');
+    const element = document.getElementById("container");
     let canvas = await html2canvas(element);
     let data = canvas.toDataURL();
 
     const uri = stageRef.current.toDataURL();
-    addItem(
-      { ...product, qty: 1, customDesign: [data, uri] },
-      cardDispatch
-    );
+    addItem({ ...product, qty: 1, customDesign: [data, uri] }, cardDispatch);
   };
 
   const handleText = (e, id) => {
@@ -237,10 +230,10 @@ const App = () => {
       y: 130.98084650809713,
       text: e,
       fontSize: 30,
-      fontFamily: 'Calibri',
+      fontFamily: "Calibri",
       id: 0,
-      color: '#000',
-      fill: '#000',
+      color: "#000",
+      fill: "#000",
     };
 
     if (texts.length === 0) {
@@ -297,16 +290,16 @@ const App = () => {
   };
 
   const changeCircleColor = (color) => {
-    if (color === '#000000') {
-      setActiveBox('black');
+    if (color === "#000000") {
+      setActiveBox("black");
     } else {
-      setActiveBox('white');
+      setActiveBox("white");
     }
     setCircleColor(color);
   };
 
   const removeSavedDesign = (index) => {
-    const json = localStorage.getItem('saveDesignCircle');
+    const json = localStorage.getItem("saveDesignCircle");
     if (json) {
       const state = JSON.parse(json);
 
@@ -315,12 +308,12 @@ const App = () => {
 
       setsavedImg(state.imgArr);
 
-      localStorage.setItem('saveDesignCircle', JSON.stringify(state));
+      localStorage.setItem("saveDesignCircle", JSON.stringify(state));
     }
   };
 
   const showDesign = (index) => {
-    const json = localStorage.getItem('saveDesignCircle');
+    const json = localStorage.getItem("saveDesignCircle");
 
     if (json) {
       const state = JSON.parse(json);
@@ -330,14 +323,14 @@ const App = () => {
       setTexts([]);
 
       stagArr.children[0].children.forEach((element) => {
-        if (element.className === 'Image') {
+        if (element.className === "Image") {
           const childAttr = element.attrs;
           const hash = btoa(Math.random()).substr(10, 5);
           let img = new Image();
           img.src = childAttr.imageUrl;
           img.onload = function () {
             const item = {
-              type: 'image',
+              type: "image",
               src: childAttr.imageUrl,
               id: hash,
               hash: hash,
@@ -361,7 +354,7 @@ const App = () => {
             y: childAttr.y,
             text: childAttr.text,
             fontSize: childAttr.fontSize,
-            fontFamily: 'Calibri',
+            fontFamily: "Calibri",
             id: 0,
             color: childAttr.color,
             fill: childAttr.fill,
@@ -372,9 +365,7 @@ const App = () => {
     }
   };
   const saveDesign = () => {
-    let savedDesign = JSON.parse(
-      localStorage.getItem('saveDesignCircle')
-    );
+    let savedDesign = JSON.parse(localStorage.getItem("saveDesignCircle"));
     if (savedDesign === null) {
       const designObj = {
         stagArr: [],
@@ -388,15 +379,12 @@ const App = () => {
         const dataURL = stageRef.current.toDataURL({
           quality: 1,
           pixelRatio: 1,
-          mimeType: 'image/png',
+          mimeType: "image/png",
         });
 
         designObj.imgArr.push(dataURL);
         setsavedImg(designObj.imgArr);
-        localStorage.setItem(
-          'saveDesignCircle',
-          JSON.stringify(designObj)
-        );
+        localStorage.setItem("saveDesignCircle", JSON.stringify(designObj));
       }, 1000);
     } else {
       const json = stageRef.current.toJSON();
@@ -409,15 +397,12 @@ const App = () => {
         const dataURL = stageRef.current.toDataURL({
           quality: 1,
           pixelRatio: 1,
-          mimeType: 'image/png',
+          mimeType: "image/png",
         });
 
         savedDesign.imgArr.push(dataURL);
         setsavedImg(savedDesign.imgArr);
-        localStorage.setItem(
-          'saveDesignCircle',
-          JSON.stringify(savedDesign)
-        );
+        localStorage.setItem("saveDesignCircle", JSON.stringify(savedDesign));
       }, 1000);
     }
   };
@@ -431,8 +416,8 @@ const App = () => {
         </div>
       ) : error ? (
         <div className="container text-center pt-24 pb-6 text-red-500 font-semibold text-xl">
-          Something wrong Please Reload your Application or click try
-          again button
+          Something wrong Please Reload your Application or click try again
+          button
           <br />
           <button
             className="bg-green-400 px-6 py-2.5 rounded-full mt-3 text-white"
@@ -442,7 +427,7 @@ const App = () => {
           </button>
         </div>
       ) : (
-        <div className="mt-20" style={{ background: '#8f7f7' }}>
+        <div className="mt-20" style={{ background: "#8f7f7" }}>
           <div className="container">
             {width > 1050 ? (
               <Flex>
@@ -500,10 +485,7 @@ const App = () => {
                         id="container"
                         onDrop={(e) => {
                           e.preventDefault();
-                          const hash = btoa(Math.random()).substr(
-                            10,
-                            5
-                          );
+                          const hash = btoa(Math.random()).substr(10, 5);
                           // register event position
                           stageRef.current.setPointersPositions(e);
                           const item = {
@@ -511,7 +493,7 @@ const App = () => {
                             ...itemRef.current,
                             hash,
                           };
-                          if (itemRef.current.type === 'image') {
+                          if (itemRef.current.type === "image") {
                             setImages((images) => [...images, item]);
                           } else {
                             setTexts((texts) => [...texts, item]);
@@ -524,8 +506,8 @@ const App = () => {
                           height={400}
                           style={{
                             backgroundColor: circleColor,
-                            borderRadius: '50%',
-                            overflow: 'hidden',
+                            borderRadius: "50%",
+                            overflow: "hidden",
                             // boxShadow: "0px 0px 17px 0px rgb(204 204 204 / 64%)"
                           }}
                           ref={stageRef}
@@ -542,9 +524,7 @@ const App = () => {
                                   layerRef={layerRef}
                                   setSelectedId={setSelectedId}
                                   selectedId={selectedId}
-                                  isSelected={
-                                    image.hash === selectedId
-                                  }
+                                  isSelected={image.hash === selectedId}
                                   onSelect={(event) => {
                                     const shape = event.target;
                                     activeRef.current = shape;
@@ -569,9 +549,7 @@ const App = () => {
                                   setSelectedId={setSelectedId}
                                   selectedId={selectedId}
                                   setFont={(e) => setFont(e)}
-                                  isSelected={
-                                    text.hash === selectedId
-                                  }
+                                  isSelected={text.hash === selectedId}
                                   onSelect={(event) => {
                                     const shape = event.target;
                                     activeRef.current = shape;
@@ -592,9 +570,7 @@ const App = () => {
                   <Flex className="toolbox" flexDir="column">
                     <div
                       className={
-                        showImage
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                        showImage ? "toolbox-item tool-active" : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickImage()}>
@@ -604,9 +580,7 @@ const App = () => {
                     </div>
                     <div
                       className={
-                        showText
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                        showText ? "toolbox-item tool-active" : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickText()}>
@@ -628,8 +602,8 @@ const App = () => {
                     <div
                       className={
                         showPVariation
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                          ? "toolbox-item tool-active"
+                          : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickProductVariation()}>
@@ -642,22 +616,20 @@ const App = () => {
                     <div
                       className={
                         showSavedDesign
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                          ? "toolbox-item tool-active"
+                          : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickSavedDesign()}>
                         <BsImageFill fontSize={22} />
                       </button>
-                      <div className="toolbox-item-label">
-                        My saved designs
-                      </div>
+                      <div className="toolbox-item-label">My saved designs</div>
                     </div>
 
-                    <div style={{ height: '43px' }}></div>
-                    <div style={{ height: '43px' }}></div>
-                    <div style={{ height: '43px' }}></div>
-                    <div style={{ height: '43px' }}></div>
+                    <div style={{ height: "43px" }}></div>
+                    <div style={{ height: "43px" }}></div>
+                    <div style={{ height: "43px" }}></div>
+                    <div style={{ height: "43px" }}></div>
                     <div className="toolbox-item-stack">
                       <div>
                         <MdLayers fontSize={28} />
@@ -740,9 +712,7 @@ const App = () => {
                                 </div>
                               </div>
                             </li>
-                            <li
-                              onClick={() => clickProductVariation()}
-                            >
+                            <li onClick={() => clickProductVariation()}>
                               <div className="onBox">
                                 <span>
                                   Product <br /> variations
@@ -786,34 +756,30 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           PLAIN TEXT
                         </div>
-                        <div style={{ padding: '20px' }}>
+                        <div style={{ padding: "20px" }}>
                           <div className="custom_text_div">
                             <textarea
-                              onChange={(e) =>
-                                handleText(e.target.value, 0)
-                              }
+                              onChange={(e) => handleText(e.target.value, 0)}
                               placeholder="Text to be added to your design"
                               rows={2}
                               style={{
-                                fontSize: '14px',
-                                color: '#000',
-                                padding: '10px',
+                                fontSize: "14px",
+                                color: "#000",
+                                padding: "10px",
                                 height: 80,
-                                display: 'flex',
-                                width: '100%',
-                                boxShadow:
-                                  'rgb(0 0 0 / 25%) 0px 1px 4px',
-                                fontFamily:
-                                  "'Helvetica','Arial', sans-serif",
-                                borderRadius: '4px',
-                                background: '#ffffff',
+                                display: "flex",
+                                width: "100%",
+                                boxShadow: "rgb(0 0 0 / 25%) 0px 1px 4px",
+                                fontFamily: "'Helvetica','Arial', sans-serif",
+                                borderRadius: "4px",
+                                background: "#ffffff",
                               }}
                             />
                           </div>
@@ -831,26 +797,26 @@ const App = () => {
                             >
                               <option
                                 value="Arial"
-                                style={{ fontFamily: 'Arial' }}
+                                style={{ fontFamily: "Arial" }}
                               >
                                 Arial
                               </option>
                               <option
                                 value="Arial Black"
-                                style={{ fontFamily: 'Arial' }}
+                                style={{ fontFamily: "Arial" }}
                               >
                                 Arial Black
                               </option>
                               <option
                                 value="Algerian"
-                                style={{ fontFamily: 'Algerian' }}
+                                style={{ fontFamily: "Algerian" }}
                               >
                                 Algerian
                               </option>
                               <option
                                 value="Berlin Sans FB"
                                 style={{
-                                  fontFamily: 'Berlin Sans FB',
+                                  fontFamily: "Berlin Sans FB",
                                 }}
                               >
                                 Berlin Sans FB
@@ -858,53 +824,45 @@ const App = () => {
                               <option
                                 value="Comic Sans MS"
                                 style={{
-                                  fontFamily: 'Comic Sans MS',
+                                  fontFamily: "Comic Sans MS",
                                 }}
                               >
                                 Comic Sans MS
                               </option>
                               <option
                                 value="Muli"
-                                style={{ fontFamily: 'Muli' }}
+                                style={{ fontFamily: "Muli" }}
                               >
                                 Google Font Muli
                               </option>
                               <option
                                 value="Quicksand"
-                                style={{ fontFamily: 'Quicksand' }}
+                                style={{ fontFamily: "Quicksand" }}
                               >
                                 Google Font Quicksand
                               </option>
                               <option
                                 value="nunito"
-                                style={{ fontFamily: 'nunito' }}
+                                style={{ fontFamily: "nunito" }}
                               >
                                 Google Font Nunito Regular
                               </option>
                             </select>
-                            <div className="custom_label">
-                              Font Size
-                            </div>
+                            <div className="custom_label">Font Size</div>
                             <NumberInput
                               defaultValue={0}
                               value={font.size}
-                              onChange={(size) =>
-                                setFont({ ...font, size })
-                              }
+                              onChange={(size) => setFont({ ...font, size })}
                               clampValueOnBlur={false}
                             >
                               <NumberInputField />
                               <NumberInputStepper>
-                                <NumberIncrementStepper
-                                  fontSize={12}
-                                />
-                                <NumberDecrementStepper
-                                  fontSize={12}
-                                />
+                                <NumberIncrementStepper fontSize={12} />
+                                <NumberDecrementStepper fontSize={12} />
                               </NumberInputStepper>
                             </NumberInput>
                             <div className="custom_label">Color</div>
-                            <div style={{ marginTop: '10px' }}>
+                            <div style={{ marginTop: "10px" }}>
                               <CompactPicker
                                 color={color}
                                 onChange={changeColor}
@@ -920,9 +878,9 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           UPLOAD IMAGE
@@ -952,9 +910,7 @@ const App = () => {
                                   fontSize="18px"
                                   className="plus_icon_upload"
                                 />
-                                <span className="ml-1">
-                                  Upload Image
-                                </span>
+                                <span className="ml-1">Upload Image</span>
                               </label>
                             </h1>
                             <input
@@ -972,9 +928,7 @@ const App = () => {
                                         key={index}
                                       >
                                         <button
-                                          onClick={() =>
-                                            removeImg(index)
-                                          }
+                                          onClick={() => removeImg(index)}
                                           className="cross_btn"
                                         >
                                           <FaTimes />
@@ -983,14 +937,12 @@ const App = () => {
                                           alt="logo"
                                           src={img}
                                           draggable="true"
-                                          onClick={() =>
-                                            changeImg(img)
-                                          }
+                                          onClick={() => changeImg(img)}
                                           onDragStart={(e) => {
                                             itemRef.current = {
-                                              type: 'image',
+                                              type: "image",
                                               src: e.target.src,
-                                              id: 's21',
+                                              id: "s21",
                                             };
                                           }}
                                         />
@@ -1008,16 +960,16 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           PRODUCT VARIATIONS
                         </div>
                         <div
                           style={{
-                            padding: '20px',
+                            padding: "20px",
                           }}
                         >
                           {/* <ul className="rect-custom-products">
@@ -1050,46 +1002,34 @@ const App = () => {
                             </li>
                           </ul> */}
                           <ul className="rect-custom-products">
-                            <li
-                              onClick={() =>
-                                changeCircleColor('#efeef0')
-                              }
-                            >
+                            <li onClick={() => changeCircleColor("#efeef0")}>
                               <div
                                 className={`${
-                                  activeBox === 'white'
-                                    ? 'custom_prod_border active_border'
-                                    : 'custom_prod_border'
+                                  activeBox === "white"
+                                    ? "custom_prod_border active_border"
+                                    : "custom_prod_border"
                                 }`}
                               >
                                 <img
                                   src={customCircleWhite}
                                   alt="custom product"
                                 />
-                                <span class="tooltipstered">
-                                  White
-                                </span>
+                                <span class="tooltipstered">White</span>
                               </div>
                             </li>
-                            <li
-                              onClick={() =>
-                                changeCircleColor('#000000')
-                              }
-                            >
+                            <li onClick={() => changeCircleColor("#000000")}>
                               <div
                                 className={`${
-                                  activeBox === 'black'
-                                    ? 'custom_prod_border active_border'
-                                    : 'custom_prod_border'
+                                  activeBox === "black"
+                                    ? "custom_prod_border active_border"
+                                    : "custom_prod_border"
                                 }`}
                               >
                                 <img
                                   src={customCircleBlack}
                                   alt="custom product"
                                 />
-                                <span class="tooltipstered">
-                                  Black
-                                </span>
+                                <span class="tooltipstered">Black</span>
                               </div>
                             </li>
                           </ul>
@@ -1100,16 +1040,16 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           SAVED DESIGNS
                         </div>
                         <div
                           style={{
-                            padding: '20px',
+                            padding: "20px",
                           }}
                         >
                           <div className="no_design">
@@ -1117,14 +1057,9 @@ const App = () => {
                               <div className="grid grid-cols-2  md:grid-cols-2 lg:grid-cols-2 gap-4 auto-rows-auto mb-4">
                                 {savedImg.map((img, i) => {
                                   return (
-                                    <div
-                                      className="custom_images"
-                                      key={i}
-                                    >
+                                    <div className="custom_images" key={i}>
                                       <button
-                                        onClick={() =>
-                                          removeSavedDesign(i)
-                                        }
+                                        onClick={() => removeSavedDesign(i)}
                                         className="cross_btn"
                                       >
                                         <FaTimes />
@@ -1139,9 +1074,7 @@ const App = () => {
                                 })}
                               </div>
                             ) : (
-                              <h3>
-                                You currently have no saved designs
-                              </h3>
+                              <h3>You currently have no saved designs</h3>
                             )}
 
                             <div className="mt-4">
@@ -1162,7 +1095,7 @@ const App = () => {
                       className="custom_cart_btn"
                       onClick={() => customAddToCart()}
                       style={{
-                        position: 'absolute',
+                        position: "absolute",
                         bottom: 0,
                         left: 0,
                         right: 0,
@@ -1230,10 +1163,7 @@ const App = () => {
                         id="container"
                         onDrop={(e) => {
                           e.preventDefault();
-                          const hash = btoa(Math.random()).substr(
-                            10,
-                            5
-                          );
+                          const hash = btoa(Math.random()).substr(10, 5);
                           // register event position
                           stageRef.current.setPointersPositions(e);
                           const item = {
@@ -1241,7 +1171,7 @@ const App = () => {
                             ...itemRef.current,
                             hash,
                           };
-                          if (itemRef.current.type === 'image') {
+                          if (itemRef.current.type === "image") {
                             setImages((images) => [...images, item]);
                           } else {
                             setTexts((texts) => [...texts, item]);
@@ -1254,8 +1184,8 @@ const App = () => {
                           height={300}
                           style={{
                             backgroundColor: circleColor,
-                            borderRadius: '50%',
-                            overflow: 'hidden',
+                            borderRadius: "50%",
+                            overflow: "hidden",
                             // boxShadow: "0px 0px 17px 0px rgb(204 204 204 / 64%)"
                           }}
                           ref={stageRef}
@@ -1272,9 +1202,7 @@ const App = () => {
                                   layerRef={layerRef}
                                   setSelectedId={setSelectedId}
                                   selectedId={selectedId}
-                                  isSelected={
-                                    image.hash === selectedId
-                                  }
+                                  isSelected={image.hash === selectedId}
                                   onSelect={(event) => {
                                     const shape = event.target;
                                     activeRef.current = shape;
@@ -1299,9 +1227,7 @@ const App = () => {
                                   setSelectedId={setSelectedId}
                                   selectedId={selectedId}
                                   setFont={(e) => setFont(e)}
-                                  isSelected={
-                                    text.hash === selectedId
-                                  }
+                                  isSelected={text.hash === selectedId}
                                   onSelect={(event) => {
                                     const shape = event.target;
                                     activeRef.current = shape;
@@ -1322,9 +1248,7 @@ const App = () => {
                   <Flex className="toolbox" flexDir="column">
                     <div
                       className={
-                        showImage
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                        showImage ? "toolbox-item tool-active" : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickImage()}>
@@ -1334,9 +1258,7 @@ const App = () => {
                     </div>
                     <div
                       className={
-                        showText
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                        showText ? "toolbox-item tool-active" : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickText()}>
@@ -1358,8 +1280,8 @@ const App = () => {
                     <div
                       className={
                         showPVariation
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                          ? "toolbox-item tool-active"
+                          : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickProductVariation()}>
@@ -1372,22 +1294,20 @@ const App = () => {
                     <div
                       className={
                         showSavedDesign
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                          ? "toolbox-item tool-active"
+                          : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickSavedDesign()}>
                         <BsImageFill fontSize={22} />
                       </button>
-                      <div className="toolbox-item-label">
-                        My saved designs
-                      </div>
+                      <div className="toolbox-item-label">My saved designs</div>
                     </div>
 
-                    <div style={{ height: '43px' }}></div>
-                    <div style={{ height: '43px' }}></div>
-                    <div style={{ height: '43px' }}></div>
-                    <div style={{ height: '43px' }}></div>
+                    <div style={{ height: "43px" }}></div>
+                    <div style={{ height: "43px" }}></div>
+                    <div style={{ height: "43px" }}></div>
+                    <div style={{ height: "43px" }}></div>
                     <div className="toolbox-item-stack">
                       <div>
                         <MdLayers fontSize={28} />
@@ -1470,9 +1390,7 @@ const App = () => {
                                 </div>
                               </div>
                             </li>
-                            <li
-                              onClick={() => clickProductVariation()}
-                            >
+                            <li onClick={() => clickProductVariation()}>
                               <div className="onBox">
                                 <span>
                                   Product <br /> variations
@@ -1516,34 +1434,30 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           PLAIN TEXT
                         </div>
-                        <div style={{ padding: '20px' }}>
+                        <div style={{ padding: "20px" }}>
                           <div className="custom_text_div">
                             <textarea
-                              onChange={(e) =>
-                                handleText(e.target.value, 0)
-                              }
+                              onChange={(e) => handleText(e.target.value, 0)}
                               placeholder="Text to be added to your design"
                               rows={2}
                               style={{
-                                fontSize: '14px',
-                                color: '#000',
-                                padding: '10px',
+                                fontSize: "14px",
+                                color: "#000",
+                                padding: "10px",
                                 height: 80,
-                                display: 'flex',
-                                width: '100%',
-                                boxShadow:
-                                  'rgb(0 0 0 / 25%) 0px 1px 4px',
-                                fontFamily:
-                                  "'Helvetica','Arial', sans-serif",
-                                borderRadius: '4px',
-                                background: '#ffffff',
+                                display: "flex",
+                                width: "100%",
+                                boxShadow: "rgb(0 0 0 / 25%) 0px 1px 4px",
+                                fontFamily: "'Helvetica','Arial', sans-serif",
+                                borderRadius: "4px",
+                                background: "#ffffff",
                               }}
                             />
                           </div>
@@ -1561,26 +1475,26 @@ const App = () => {
                             >
                               <option
                                 value="Arial"
-                                style={{ fontFamily: 'Arial' }}
+                                style={{ fontFamily: "Arial" }}
                               >
                                 Arial
                               </option>
                               <option
                                 value="Arial Black"
-                                style={{ fontFamily: 'Arial' }}
+                                style={{ fontFamily: "Arial" }}
                               >
                                 Arial Black
                               </option>
                               <option
                                 value="Algerian"
-                                style={{ fontFamily: 'Algerian' }}
+                                style={{ fontFamily: "Algerian" }}
                               >
                                 Algerian
                               </option>
                               <option
                                 value="Berlin Sans FB"
                                 style={{
-                                  fontFamily: 'Berlin Sans FB',
+                                  fontFamily: "Berlin Sans FB",
                                 }}
                               >
                                 Berlin Sans FB
@@ -1588,53 +1502,45 @@ const App = () => {
                               <option
                                 value="Comic Sans MS"
                                 style={{
-                                  fontFamily: 'Comic Sans MS',
+                                  fontFamily: "Comic Sans MS",
                                 }}
                               >
                                 Comic Sans MS
                               </option>
                               <option
                                 value="Muli"
-                                style={{ fontFamily: 'Muli' }}
+                                style={{ fontFamily: "Muli" }}
                               >
                                 Google Font Muli
                               </option>
                               <option
                                 value="Quicksand"
-                                style={{ fontFamily: 'Quicksand' }}
+                                style={{ fontFamily: "Quicksand" }}
                               >
                                 Google Font Quicksand
                               </option>
                               <option
                                 value="nunito"
-                                style={{ fontFamily: 'nunito' }}
+                                style={{ fontFamily: "nunito" }}
                               >
                                 Google Font Nunito Regular
                               </option>
                             </select>
-                            <div className="custom_label">
-                              Font Size
-                            </div>
+                            <div className="custom_label">Font Size</div>
                             <NumberInput
                               defaultValue={0}
                               value={font.size}
-                              onChange={(size) =>
-                                setFont({ ...font, size })
-                              }
+                              onChange={(size) => setFont({ ...font, size })}
                               clampValueOnBlur={false}
                             >
                               <NumberInputField />
                               <NumberInputStepper>
-                                <NumberIncrementStepper
-                                  fontSize={12}
-                                />
-                                <NumberDecrementStepper
-                                  fontSize={12}
-                                />
+                                <NumberIncrementStepper fontSize={12} />
+                                <NumberDecrementStepper fontSize={12} />
                               </NumberInputStepper>
                             </NumberInput>
                             <div className="custom_label">Color</div>
-                            <div style={{ marginTop: '10px' }}>
+                            <div style={{ marginTop: "10px" }}>
                               <CompactPicker
                                 color={color}
                                 onChange={changeColor}
@@ -1650,9 +1556,9 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           UPLOAD IMAGE
@@ -1682,9 +1588,7 @@ const App = () => {
                                   fontSize="18px"
                                   className="plus_icon_upload"
                                 />
-                                <span className="ml-1">
-                                  Upload Image
-                                </span>
+                                <span className="ml-1">Upload Image</span>
                               </label>
                             </h1>
                             <input
@@ -1702,9 +1606,7 @@ const App = () => {
                                         key={index}
                                       >
                                         <button
-                                          onClick={() =>
-                                            removeImg(index)
-                                          }
+                                          onClick={() => removeImg(index)}
                                           className="cross_btn"
                                         >
                                           <FaTimes />
@@ -1713,14 +1615,12 @@ const App = () => {
                                           alt="logo"
                                           src={img}
                                           draggable="true"
-                                          onClick={() =>
-                                            changeImg(img)
-                                          }
+                                          onClick={() => changeImg(img)}
                                           onDragStart={(e) => {
                                             itemRef.current = {
-                                              type: 'image',
+                                              type: "image",
                                               src: e.target.src,
-                                              id: 's21',
+                                              id: "s21",
                                             };
                                           }}
                                         />
@@ -1738,16 +1638,16 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           PRODUCT VARIATIONS
                         </div>
                         <div
                           style={{
-                            padding: '20px',
+                            padding: "20px",
                           }}
                         >
                           {/* <ul className="rect-custom-products">
@@ -1780,46 +1680,34 @@ const App = () => {
                             </li>
                           </ul> */}
                           <ul className="rect-custom-products">
-                            <li
-                              onClick={() =>
-                                changeCircleColor('#efeef0')
-                              }
-                            >
+                            <li onClick={() => changeCircleColor("#efeef0")}>
                               <div
                                 className={`${
-                                  activeBox === 'white'
-                                    ? 'custom_prod_border active_border'
-                                    : 'custom_prod_border'
+                                  activeBox === "white"
+                                    ? "custom_prod_border active_border"
+                                    : "custom_prod_border"
                                 }`}
                               >
                                 <img
                                   src={customCircleWhite}
                                   alt="custom product"
                                 />
-                                <span class="tooltipstered">
-                                  White
-                                </span>
+                                <span class="tooltipstered">White</span>
                               </div>
                             </li>
-                            <li
-                              onClick={() =>
-                                changeCircleColor('#000000')
-                              }
-                            >
+                            <li onClick={() => changeCircleColor("#000000")}>
                               <div
                                 className={`${
-                                  activeBox === 'black'
-                                    ? 'custom_prod_border active_border'
-                                    : 'custom_prod_border'
+                                  activeBox === "black"
+                                    ? "custom_prod_border active_border"
+                                    : "custom_prod_border"
                                 }`}
                               >
                                 <img
                                   src={customCircleBlack}
                                   alt="custom product"
                                 />
-                                <span class="tooltipstered">
-                                  Black
-                                </span>
+                                <span class="tooltipstered">Black</span>
                               </div>
                             </li>
                           </ul>
@@ -1830,16 +1718,16 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           SAVED DESIGNS
                         </div>
                         <div
                           style={{
-                            padding: '20px',
+                            padding: "20px",
                           }}
                         >
                           <div className="no_design">
@@ -1847,14 +1735,9 @@ const App = () => {
                               <div className="grid grid-cols-2  md:grid-cols-2 lg:grid-cols-2 gap-4 auto-rows-auto mb-4">
                                 {savedImg.map((img, i) => {
                                   return (
-                                    <div
-                                      className="custom_images"
-                                      key={i}
-                                    >
+                                    <div className="custom_images" key={i}>
                                       <button
-                                        onClick={() =>
-                                          removeSavedDesign(i)
-                                        }
+                                        onClick={() => removeSavedDesign(i)}
                                         className="cross_btn"
                                       >
                                         <FaTimes />
@@ -1869,9 +1752,7 @@ const App = () => {
                                 })}
                               </div>
                             ) : (
-                              <h3>
-                                You currently have no saved designs
-                              </h3>
+                              <h3>You currently have no saved designs</h3>
                             )}
 
                             <div className="mt-4">
@@ -1892,7 +1773,7 @@ const App = () => {
                       className="custom_cart_btn"
                       onClick={() => customAddToCart()}
                       style={{
-                        position: 'absolute',
+                        position: "absolute",
                         bottom: 0,
                         left: 0,
                         right: 0,
@@ -1916,10 +1797,7 @@ const App = () => {
                         id="container"
                         onDrop={(e) => {
                           e.preventDefault();
-                          const hash = btoa(Math.random()).substr(
-                            10,
-                            5
-                          );
+                          const hash = btoa(Math.random()).substr(10, 5);
                           // register event position
                           stageRef.current.setPointersPositions(e);
                           const item = {
@@ -1927,7 +1805,7 @@ const App = () => {
                             ...itemRef.current,
                             hash,
                           };
-                          if (itemRef.current.type === 'image') {
+                          if (itemRef.current.type === "image") {
                             setImages((images) => [...images, item]);
                           } else {
                             setTexts((texts) => [...texts, item]);
@@ -1940,8 +1818,8 @@ const App = () => {
                           height={300}
                           style={{
                             backgroundColor: circleColor,
-                            borderRadius: '50%',
-                            overflow: 'hidden',
+                            borderRadius: "50%",
+                            overflow: "hidden",
                             // boxShadow: "0px 0px 17px 0px rgb(204 204 204 / 64%)"
                           }}
                           ref={stageRef}
@@ -1958,9 +1836,7 @@ const App = () => {
                                   layerRef={layerRef}
                                   setSelectedId={setSelectedId}
                                   selectedId={selectedId}
-                                  isSelected={
-                                    image.hash === selectedId
-                                  }
+                                  isSelected={image.hash === selectedId}
                                   onSelect={(event) => {
                                     const shape = event.target;
                                     activeRef.current = shape;
@@ -1985,9 +1861,7 @@ const App = () => {
                                   setSelectedId={setSelectedId}
                                   selectedId={selectedId}
                                   setFont={(e) => setFont(e)}
-                                  isSelected={
-                                    text.hash === selectedId
-                                  }
+                                  isSelected={text.hash === selectedId}
                                   onSelect={(event) => {
                                     const shape = event.target;
                                     activeRef.current = shape;
@@ -2053,9 +1927,7 @@ const App = () => {
                                 </div>
                               </div>
                             </li>
-                            <li
-                              onClick={() => clickProductVariation()}
-                            >
+                            <li onClick={() => clickProductVariation()}>
                               <div className="onBox">
                                 <span>
                                   Product <br /> variations
@@ -2099,34 +1971,30 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           PLAIN TEXT
                         </div>
-                        <div style={{ padding: '20px' }}>
+                        <div style={{ padding: "20px" }}>
                           <div className="custom_text_div">
                             <textarea
-                              onChange={(e) =>
-                                handleText(e.target.value, 0)
-                              }
+                              onChange={(e) => handleText(e.target.value, 0)}
                               placeholder="Text to be added to your design"
                               rows={2}
                               style={{
-                                fontSize: '14px',
-                                color: '#000',
-                                padding: '10px',
+                                fontSize: "14px",
+                                color: "#000",
+                                padding: "10px",
                                 height: 80,
-                                display: 'flex',
-                                width: '100%',
-                                boxShadow:
-                                  'rgb(0 0 0 / 25%) 0px 1px 4px',
-                                fontFamily:
-                                  "'Helvetica','Arial', sans-serif",
-                                borderRadius: '4px',
-                                background: '#ffffff',
+                                display: "flex",
+                                width: "100%",
+                                boxShadow: "rgb(0 0 0 / 25%) 0px 1px 4px",
+                                fontFamily: "'Helvetica','Arial', sans-serif",
+                                borderRadius: "4px",
+                                background: "#ffffff",
                               }}
                             />
                           </div>
@@ -2144,26 +2012,26 @@ const App = () => {
                             >
                               <option
                                 value="Arial"
-                                style={{ fontFamily: 'Arial' }}
+                                style={{ fontFamily: "Arial" }}
                               >
                                 Arial
                               </option>
                               <option
                                 value="Arial Black"
-                                style={{ fontFamily: 'Arial' }}
+                                style={{ fontFamily: "Arial" }}
                               >
                                 Arial Black
                               </option>
                               <option
                                 value="Algerian"
-                                style={{ fontFamily: 'Algerian' }}
+                                style={{ fontFamily: "Algerian" }}
                               >
                                 Algerian
                               </option>
                               <option
                                 value="Berlin Sans FB"
                                 style={{
-                                  fontFamily: 'Berlin Sans FB',
+                                  fontFamily: "Berlin Sans FB",
                                 }}
                               >
                                 Berlin Sans FB
@@ -2171,53 +2039,45 @@ const App = () => {
                               <option
                                 value="Comic Sans MS"
                                 style={{
-                                  fontFamily: 'Comic Sans MS',
+                                  fontFamily: "Comic Sans MS",
                                 }}
                               >
                                 Comic Sans MS
                               </option>
                               <option
                                 value="Muli"
-                                style={{ fontFamily: 'Muli' }}
+                                style={{ fontFamily: "Muli" }}
                               >
                                 Google Font Muli
                               </option>
                               <option
                                 value="Quicksand"
-                                style={{ fontFamily: 'Quicksand' }}
+                                style={{ fontFamily: "Quicksand" }}
                               >
                                 Google Font Quicksand
                               </option>
                               <option
                                 value="nunito"
-                                style={{ fontFamily: 'nunito' }}
+                                style={{ fontFamily: "nunito" }}
                               >
                                 Google Font Nunito Regular
                               </option>
                             </select>
-                            <div className="custom_label">
-                              Font Size
-                            </div>
+                            <div className="custom_label">Font Size</div>
                             <NumberInput
                               defaultValue={0}
                               value={font.size}
-                              onChange={(size) =>
-                                setFont({ ...font, size })
-                              }
+                              onChange={(size) => setFont({ ...font, size })}
                               clampValueOnBlur={false}
                             >
                               <NumberInputField />
                               <NumberInputStepper>
-                                <NumberIncrementStepper
-                                  fontSize={12}
-                                />
-                                <NumberDecrementStepper
-                                  fontSize={12}
-                                />
+                                <NumberIncrementStepper fontSize={12} />
+                                <NumberDecrementStepper fontSize={12} />
                               </NumberInputStepper>
                             </NumberInput>
                             <div className="custom_label">Color</div>
-                            <div style={{ marginTop: '10px' }}>
+                            <div style={{ marginTop: "10px" }}>
                               <CompactPicker
                                 color={color}
                                 onChange={changeColor}
@@ -2233,9 +2093,9 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           UPLOAD IMAGE
@@ -2265,9 +2125,7 @@ const App = () => {
                                   fontSize="18px"
                                   className="plus_icon_upload"
                                 />
-                                <span className="ml-1">
-                                  Upload Image
-                                </span>
+                                <span className="ml-1">Upload Image</span>
                               </label>
                             </h1>
                             <input
@@ -2285,9 +2143,7 @@ const App = () => {
                                         key={index}
                                       >
                                         <button
-                                          onClick={() =>
-                                            removeImg(index)
-                                          }
+                                          onClick={() => removeImg(index)}
                                           className="cross_btn"
                                         >
                                           <FaTimes />
@@ -2296,14 +2152,12 @@ const App = () => {
                                           alt="logo"
                                           src={img}
                                           draggable="true"
-                                          onClick={() =>
-                                            changeImg(img)
-                                          }
+                                          onClick={() => changeImg(img)}
                                           onDragStart={(e) => {
                                             itemRef.current = {
-                                              type: 'image',
+                                              type: "image",
                                               src: e.target.src,
-                                              id: 's21',
+                                              id: "s21",
                                             };
                                           }}
                                         />
@@ -2321,16 +2175,16 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           PRODUCT VARIATIONS
                         </div>
                         <div
                           style={{
-                            padding: '20px',
+                            padding: "20px",
                           }}
                         >
                           {/* <ul className="rect-custom-products">
@@ -2363,46 +2217,34 @@ const App = () => {
                             </li>
                           </ul> */}
                           <ul className="rect-custom-products">
-                            <li
-                              onClick={() =>
-                                changeCircleColor('#efeef0')
-                              }
-                            >
+                            <li onClick={() => changeCircleColor("#efeef0")}>
                               <div
                                 className={`${
-                                  activeBox === 'white'
-                                    ? 'custom_prod_border active_border'
-                                    : 'custom_prod_border'
+                                  activeBox === "white"
+                                    ? "custom_prod_border active_border"
+                                    : "custom_prod_border"
                                 }`}
                               >
                                 <img
                                   src={customCircleWhite}
                                   alt="custom product"
                                 />
-                                <span class="tooltipstered">
-                                  White
-                                </span>
+                                <span class="tooltipstered">White</span>
                               </div>
                             </li>
-                            <li
-                              onClick={() =>
-                                changeCircleColor('#000000')
-                              }
-                            >
+                            <li onClick={() => changeCircleColor("#000000")}>
                               <div
                                 className={`${
-                                  activeBox === 'black'
-                                    ? 'custom_prod_border active_border'
-                                    : 'custom_prod_border'
+                                  activeBox === "black"
+                                    ? "custom_prod_border active_border"
+                                    : "custom_prod_border"
                                 }`}
                               >
                                 <img
                                   src={customCircleBlack}
                                   alt="custom product"
                                 />
-                                <span class="tooltipstered">
-                                  Black
-                                </span>
+                                <span class="tooltipstered">Black</span>
                               </div>
                             </li>
                           </ul>
@@ -2413,16 +2255,16 @@ const App = () => {
                       <>
                         <div
                           style={{
-                            background: '#f6f7f8',
-                            textAlign: 'center',
-                            padding: '10px',
+                            background: "#f6f7f8",
+                            textAlign: "center",
+                            padding: "10px",
                           }}
                         >
                           SAVED DESIGNS
                         </div>
                         <div
                           style={{
-                            padding: '20px',
+                            padding: "20px",
                           }}
                         >
                           <div className="no_design">
@@ -2430,14 +2272,9 @@ const App = () => {
                               <div className="grid grid-cols-2  md:grid-cols-2 lg:grid-cols-2 gap-4 auto-rows-auto mb-4">
                                 {savedImg.map((img, i) => {
                                   return (
-                                    <div
-                                      className="custom_images"
-                                      key={i}
-                                    >
+                                    <div className="custom_images" key={i}>
                                       <button
-                                        onClick={() =>
-                                          removeSavedDesign(i)
-                                        }
+                                        onClick={() => removeSavedDesign(i)}
                                         className="cross_btn"
                                       >
                                         <FaTimes />
@@ -2452,9 +2289,7 @@ const App = () => {
                                 })}
                               </div>
                             ) : (
-                              <h3>
-                                You currently have no saved designs
-                              </h3>
+                              <h3>You currently have no saved designs</h3>
                             )}
 
                             <div className="mt-4">
@@ -2475,7 +2310,7 @@ const App = () => {
                       className="custom_cart_btn"
                       onClick={() => customAddToCart()}
                       style={{
-                        position: 'absolute',
+                        position: "absolute",
                         bottom: 0,
                         left: 0,
                         right: 0,
@@ -2488,9 +2323,7 @@ const App = () => {
                   <Flex className="toolbox" flexDir="column">
                     <div
                       className={
-                        showImage
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                        showImage ? "toolbox-item tool-active" : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickImage()}>
@@ -2500,9 +2333,7 @@ const App = () => {
                     </div>
                     <div
                       className={
-                        showText
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                        showText ? "toolbox-item tool-active" : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickText()}>
@@ -2524,8 +2355,8 @@ const App = () => {
                     <div
                       className={
                         showPVariation
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                          ? "toolbox-item tool-active"
+                          : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickProductVariation()}>
@@ -2538,22 +2369,20 @@ const App = () => {
                     <div
                       className={
                         showSavedDesign
-                          ? 'toolbox-item tool-active'
-                          : 'toolbox-item'
+                          ? "toolbox-item tool-active"
+                          : "toolbox-item"
                       }
                     >
                       <button onClick={() => clickSavedDesign()}>
                         <BsImageFill fontSize={22} />
                       </button>
-                      <div className="toolbox-item-label">
-                        My saved designs
-                      </div>
+                      <div className="toolbox-item-label">My saved designs</div>
                     </div>
 
-                    <div style={{ height: '43px' }}></div>
-                    <div style={{ height: '43px' }}></div>
-                    <div style={{ height: '43px' }}></div>
-                    <div style={{ height: '43px' }}></div>
+                    <div style={{ height: "43px" }}></div>
+                    <div style={{ height: "43px" }}></div>
+                    <div style={{ height: "43px" }}></div>
+                    <div style={{ height: "43px" }}></div>
                     <div className="toolbox-item-stack">
                       <div>
                         <MdLayers fontSize={28} />

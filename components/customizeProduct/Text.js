@@ -1,5 +1,8 @@
 import React, { Fragment, useEffect, useRef } from "react";
-import { Text, Transformer } from "react-konva";
+import dynamic from "next/dynamic";
+const { Text, Transformer } = dynamic(() => import("react-konva"), {
+  ssr: false,
+});
 
 const TextDisplay = ({
   text,
