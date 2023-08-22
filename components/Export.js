@@ -1,9 +1,10 @@
-import Image from 'next/image'
-import React from 'react'
-import icon1 from '../images/crm_icon.png'
-import icon2 from '../images/teams_icon.png'
-import icon3 from '../images/apps_icon.png'
-import shareImage from '../images/exportcomponent.png'
+import Image from "next/image";
+import React from "react";
+import icon1 from "../images/crm_icon.png";
+import icon2 from "../images/teams_icon.png";
+import icon3 from "../images/apps_icon.png";
+import shareImage from "../images/exportcomponent.png";
+
 const Export = () => {
   return (
     <>
@@ -20,7 +21,7 @@ const Export = () => {
             </p>
             <br />
             <div className="flex-div">
-              <Image src={icon1} alt="no_image" />{' '}
+              <Image src={icon1} alt="no_image" />{" "}
               <h5>Apple Pay/ Debit Card</h5>
             </div>
             <p>
@@ -59,7 +60,7 @@ const Export = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Export
+export default Export;
