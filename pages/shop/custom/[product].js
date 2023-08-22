@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import dynamic from "next/dynamic";
-const { Stage, Layer } = dynamic(() => import("react-konva"), {
-  ssr: false,
-});
+import { Stage, Layer } from "react-konva";
 import html2canvas from "html2canvas";
 import { Image as CanvasImage } from "canvas";
-
 // import Footer from '../components/Footer'
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";

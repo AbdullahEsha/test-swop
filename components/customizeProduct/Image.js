@@ -1,8 +1,5 @@
 import React, { Fragment, useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
-const { Image, Transformer } = dynamic(() => import("react-konva"), {
-  ssr: false,
-});
+import { Image, Transformer } from "react-konva";
 import useImage from "./useImage";
 
 const AdImage = ({

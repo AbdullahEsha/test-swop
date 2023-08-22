@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import dynamic from "next/dynamic";
-const { Stage, Layer } = dynamic(() => import("react-konva"), {
-  ssr: false,
-});
+import { Stage, Layer } from "react-konva";
 import html2canvas from "html2canvas";
 import AdImage from "./Image";
 import Footer from "../Footer";
